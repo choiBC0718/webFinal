@@ -3,65 +3,78 @@ import {useState} from 'react';
 import {useRef} from 'react';
 import {useEffect} from 'react';
 
-const Main = ({setPage}) => { //초기 화면
+
+const Main = ({ setPage }) => {
     return (
-        <div style={{textAlign:'center'}}>
-            <h1>To Do List & Emotion Diary</h1>
-            <img src='/icon/main.jpg' width='800px' style={{display:'block', margin:'0px auto'}} />
-            <button 
-                style={{fontSize:'35px',fontWeight:'800',margin:'10px 15px 0 0',width:'220px',height:'70px'}}
-                onClick={()=>setPage('todoHome')}>To Do List</button>
-            <button 
-                style={{fontSize:'35px',fontWeight:'800',margin:'10px 0 0 15',width:'220px',height:'70px'}}
-                onClick={()=>setPage('emotionHome')}>감정 기록</button>
+        <div>
+            <table align='center'>
+                <tr align='center'>
+                    <td colspan='2'>
+                        <h1>
+                            To Do List & Emotion Diary
+                        </h1>
+                    </td>
+                </tr>
+                <tr align='center'>
+                    <td colspan='2'>
+                        <img src='/icon/main.jpg' width='400px' />
+                    </td>
+                </tr>
+                <tr align='center'>
+                    <td>
+                        <button onClick={()=> setPage('emotionHome')}>감정 기록</button>
+                    </td>
+                    <td>
+                        <button onClick={()=> setPage('todoHome')}>To Do List</button>
+                    </td>
+                </tr>
+            </table>
         </div>
-    )
+    );
 };
 
 const EmotionHome = ({ setPage, emoteData, setEmoteData,setEditData }) => {
 
     const editEmote = (id) => {
-        const targetEmote = emoteData.find((emote)=> emote.id ==id);
-        setEditData(targetEmote);
+        setEditData(emoteData.find((emote)=> emote.id ==id));
         setPage('emotionInsert');
     };
     const deleteEmote = (id) => {
         let delOk=confirm("삭제하시겠습니까?");
         if (delOk==true){
-            const updatedEmoteData = emoteData.filter((emote) => emote.id !== id);
-            setEmoteData(updatedEmoteData);
+            setEmoteData(emoteData.filter((emote) => emote.id !== id));
         }
         else return;
     };
 
     return (
         <div>
-            <h1 style={{ margin: '30 0 20 50' }}>감정 기록
-                <button style={{ fontSize: '20px', fontWeight: '600', marginLeft: '50px' }}
+            <h1>감정 기록 &nbsp;
+                <button
                     onClick={() => setPage('emotionInsert')}>추가</button>
-                <button style={{ fontSize: '20px', fontWeight: '600', marginLeft: '10px' }}
+                &nbsp;
+                <button 
                     onClick={() => setPage('main')}>이전 화면</button>
-            </h1><hr style={{ width: '1070px', marginLeft: '0' }} />
+            </h1><hr width='750px' align='left' />
 
             <table>
-                <tr style={{ height: '50px' }}>
-                    <td style={{ fontSize: '25px', fontWeight: '600', width: '200px', textAlign: 'center', borderBottom: '2px solid black' }}>날짜</td>
-                    <td style={{ fontSize: '25px', fontWeight: '600', width: '130px', textAlign: 'center', borderBottom: '2px solid black' }}>평균 기분</td>
-                    <td style={{ fontSize: '25px', fontWeight: '600', width: '300px', textAlign: 'center', borderBottom: '2px solid black' }}>Best Thing<img src="/icon/best.jpg" width='30px' /></td>
-                    <td style={{ fontSize: '25px', fontWeight: '600', width: '300px', textAlign: 'center', borderBottom: '2px solid black' }}>Worst Thing<img src="/icon/worst.jpg" width='30px' /></td>
-                    <td style={{ fontSize: '25px', fontWeight: '600', width: '120px', textAlign: 'center', borderBottom: '2px solid black' }}>비고</td>
+                <tr align='center' height='45px'>
+                    <th width='100px' height='10px'>날짜</th>
+                    <th width='100px'>평균 기분</th>
+                    <th width='200px'>Best Thing<img src="/icon/best.jpg" width='30px' /></th>
+                    <th width='200px'>Worst Thing<img src="/icon/worst.jpg" width='30px' /></th>
+                    <th width='100px'>비고</th>
                 </tr>
-
                 {emoteData.map((emote) => (
-                    <tr style={{ height: '40px' }} key={emote.id}>
-                        <td style={{ fontSize: '20px', fontWeight: '500', width: '200px', textAlign: 'center' }}>{emote.date}</td>
-                        <td style={{ fontSize: '20px', fontWeight: '500', width: '130px', textAlign: 'center' }}>{emote.avg}</td>
-                        <td style={{ fontSize: '20px', fontWeight: '500', width: '300px', textAlign: 'center' }}>{emote.best}</td>
-                        <td style={{ fontSize: '20px', fontWeight: '500', width: '300px', textAlign: 'center' }}>{emote.worst}</td>
-                        <td style={{ fontSize: '20px', fontWeight: '500', width: '120px', textAlign: 'center' }}>
-                            <button style={{ fontSize: '18px' }} onClick={() => deleteEmote(emote.id)}>삭제</button>
+                    <tr  key={emote.id} align='center' height='40px'>
+                        <td>{emote.date}</td>
+                        <td>{emote.avg}</td>
+                        <td>{emote.best}</td>
+                        <td>{emote.worst}</td>
+                        <td>
+                            <button onClick={() => deleteEmote(emote.id)}>삭제</button>
                             &nbsp;
-                            <button style={{ fontSize: '18px' }} onClick={() => editEmote(emote.id)}>수정</button>
+                            <button onClick={() => editEmote(emote.id)}>수정</button>
                         </td>
                     </tr>
                 ))}
@@ -70,7 +83,8 @@ const EmotionHome = ({ setPage, emoteData, setEmoteData,setEditData }) => {
     );
 };
 
-const EmotionInsert = ({setPage,emoteData,setEmoteData,editData,setEditData}) => {  //감정 추가 페이지
+
+const EmotionInsert = ({setPage,emoteData,setEmoteData,editData,setEditData}) => {
     const [items,setItems]=useState([]);
     const [checkItems,setCheckItems]=useState([]);
     const [title,setTitle]=useState('');
@@ -78,6 +92,9 @@ const EmotionInsert = ({setPage,emoteData,setEmoteData,editData,setEditData}) =>
     const textUi=useRef();
 
     useEffect(() => {
+        if (items.length==0 && !date){
+            setDate(new Date().toISOString().split("T")[0]);
+        }
         if (editData){
             setItems(editData.details);
             setDate(editData.date);
@@ -85,21 +102,13 @@ const EmotionInsert = ({setPage,emoteData,setEmoteData,editData,setEditData}) =>
     },[editData]);
 
     const addItem=(text)=>{
-        if (!date){
-            alert("날짜를 선택해주세요!");
-            return;
-        }
         if (!title){
             alert("내용을 입력해주세요!");
             textUi.current.focus();
             return;
         }
-
         const newItem={id:items.length+1,text,score:3};
         setItems([...items,newItem]);
-        if (items.length==0){
-            setDate(new Date().toISOString().split("T")[0]);
-        }
         setTitle('');
         textUi.current.focus();
     };
@@ -184,82 +193,87 @@ const EmotionInsert = ({setPage,emoteData,setEmoteData,editData,setEditData}) =>
 
     return (
         <div>
-            <h1 style={{margin:'30 0 20 50'}}>감정 추가
-            <button style={{fontSize:'20px',fontWeight:'600', marginLeft:'50px'}}
-            onClick={dontSave}>이전</button>
-            </h1><hr style={{width:'720px',marginLeft:'0'}} />
+            <h1>감정 추가 &nbsp;
+            <button onClick={dontSave}>이전</button>
+            </h1><hr width='750px' align='left' />
 
-            <table style={{border:'2px solid black', borderCollapse:'collapse',textAlign:'center',fontSize:'20px', width:'500px'}}>
-                <tr>
-                    <th style={{borderBottom:'1px solid grey',padding:'10px'}}>날짜</th>
-                    <td style={{borderBottom:'1px solid grey'}}>
-                        <input 
-                            type='date'
-                            value={date}
-                            style={{height:'30px',width:'203px'}}
-                            onChange={dateChange} />
+            <table>
+                <tr height='30px'>
+                    <th width='75px'>날짜</th>
+                    <td>
+                        <input type='date' value={date} onChange={dateChange} />
                     </td>
                 </tr>
-                <tr>
-                    <th style={{padding:'10px'}}>사건 추가</th>
-                    <td style={{textAlign:'center'}}>
-                        <input 
-                            type='text' 
-                            placeholder='작성 후 엔터 or 버튼' 
+                <tr height='30px'>
+                    <th>사건 추가</th>
+                    <td>
+                        <input type='text' placeholder='작성 후 엔터 or 버튼' 
                             value={title}
                             ref={textUi}
-                            style={{height:'30px',width:'150px',marginRight:'10px'}} 
                             onKeyDown={(evt)=>{
                                 if (evt.key=='Enter'){
                                     addItem(title);
                                 }
                             }}
-                        onChange={(evt)=>{setTitle(evt.target.value)}} />
-                        <button style={{height:'30px'}} onClick={()=>{addItem(title);}}>추가</button>
+                        onChange={(evt)=>{setTitle(evt.target.value)}} /> &nbsp;
+                        <button onClick={()=>{addItem(title);}}>추가</button>
                     </td>
                 </tr>
-            </table><hr style={{width:'720px',marginLeft:'0'}} />
+            </table><hr width='750px' align='left' />
             
-            <div>
+            <table>
                 {items.map((item)=>(
-                    <div key={item.id} style={{margin:'10px 0'}}>
-                        <label>
-                            <input type='checkbox' onChange={()=>checkChange(item.id)} />
-                            <div style={{marginRight:'60px',fontSize:'20px',fontWeight:'600', display:'inline-block',width:'220px'}}>{item.text}</div>
-                        </label>
-                        <label>
-                            <input type='radio' name={`score-${item.id}`} value='1' onChange={()=>scoreChange(item.id,1)} checked={item.score == 1} />
-                            <span>1점</span>
-                            <img src="/icon/worst.jpg" width='30px' style={{marginRight:'10px'}} />
-                        </label>
-                        <label>
-                            <input type='radio' name={`score-${item.id}`} value='2' onChange={()=>scoreChange(item.id,2)} checked={item.score == 2} />
-                            <span>2점</span>
-                            <img src="/icon/bad.jpg" width='30px' style={{marginRight:'10px'}} />
-                        </label>
-                        <label>
-                            <input type='radio' name={`score-${item.id}`} value='3' onChange={()=>scoreChange(item.id,3)} checked={item.score == 3} />
-                            <span>3점</span>
-                            <img src="/icon/soso.jpg" width='30px' style={{marginRight:'10px'}} />
-                        </label>
-                        <label>
-                            <input type='radio' name={`score-${item.id}`} value='4' onChange={()=>scoreChange(item.id,4)} checked={item.score == 4} />
-                            <span>4점</span>
-                            <img src="/icon/good.jpg" width='30px' style={{marginRight:'10px'}} />
-                        </label>
-                        <label>
-                            <input type='radio' name={`score-${item.id}`} value='5' onChange={()=>scoreChange(item.id,5)} checked={item.score == 5} />
-                            <span>5점</span>
-                            <img src="/icon/best.jpg" width='30px' style={{marginRight:'10px'}} />
-                        </label>
-                    </div>
+                    <tr key={item.id}>
+                        <td width='250px'>
+                            <label>
+                                <input type='checkbox' onChange={()=>checkChange(item.id)} />{item.text}
+                            </label>
+                        </td>
+                        <td width='80px'>
+                            <label>
+                                <input type='radio' name={`score-${item.id}`} value='1' onChange={()=>scoreChange(item.id,1)} checked={item.score == 1} />
+                                <span>1점</span>
+                                <img src="/icon/worst.jpg" width='30px'/>
+                            </label>
+                        </td>
+                        <td width='80px'>
+                            <label>
+                                <input type='radio' name={`score-${item.id}`} value='2' onChange={()=>scoreChange(item.id,2)} checked={item.score == 2} />
+                                <span>2점</span>
+                                <img src="/icon/bad.jpg" width='30px'/>
+                            </label>
+                        </td>
+                        <td width='80px'>
+                            <label>
+                                <input type='radio' name={`score-${item.id}`} value='3' onChange={()=>scoreChange(item.id,3)} checked={item.score == 3} />
+                                <span>3점</span>
+                                <img src="/icon/soso.jpg" width='30px'/>
+                            </label>
+                        </td>
+                        <td width='80px'>
+                            <label>
+                                <input type='radio' name={`score-${item.id}`} value='4' onChange={()=>scoreChange(item.id,4)} checked={item.score == 4} />
+                                <span>4점</span>
+                                <img src="/icon/good.jpg" width='30px'/>
+                            </label>
+                        </td>
+                        <td width='80px'>
+                            <label>
+                                <input type='radio' name={`score-${item.id}`} value='5' onChange={()=>scoreChange(item.id,5)} checked={item.score == 5} />
+                                <span>5점</span>
+                                <img src="/icon/best.jpg" width='30px'/>
+                            </label>
+                        </td> 
+                    </tr>
                 ))}
-            </div><hr style={{width:'720px',marginLeft:'0'}} />
+            </table><hr width='750px' align='left' />
 
             <div>
                 <strong>평균 점수 : {calAvgScore(items)}</strong>
-                <button style={{marginLeft:'470px',fontSize:'20px',fontWeight:'600'}} onClick={deleteItem} >삭제</button>
-                <button style={{marginLeft:'20px',fontSize:'20px',fontWeight:'600'}} onClick={saveEmote}>저장</button>
+                &nbsp;
+                <button onClick={deleteItem} >삭제</button>
+                &nbsp;
+                <button onClick={saveEmote}>저장</button>
             </div>
         </div>
     )
@@ -274,65 +288,45 @@ const TodoHome = ({ setPage, todoData, setTodoData }) => {
         );
     };
 
-
     const totalCount = todoData.length;
     const checkedCount = todoData.filter((todo) => todo.checked).length;
 
     return (
         <div>
-            <h1 style={{ margin: '30px 0 20px 50px' }}>To Do List
-                <button
-                    style={{ fontSize: '20px', fontWeight: '600', marginLeft: '50px' }}
-                    onClick={() => setPage('todoInsert')}
-                >
-                    추가/수정
-                </button>
-                <button
-                    style={{ fontSize: '20px', fontWeight: '600', marginLeft: '10px' }}
-                    onClick={() => setPage('main')}
-                >
-                    이전 화면
-                </button>
-                <span style={{ fontSize: '20px', fontWeight: '600', marginLeft: '20px' }}>
-                    완료 현황: {checkedCount}/{totalCount}
-                </span>
+            <h1>To Do List &nbsp;
+                <button onClick={() => setPage('todoInsert')}>추가/수정</button>
+                &nbsp;
+                <button onClick={() => setPage('main')}>이전 화면</button>
             </h1>
-            <hr style={{ width: '660px', marginLeft: '0' }} />
+            <strong>완료 현황: {checkedCount}/{totalCount}</strong>
+            <hr width='750px' align='left' />
 
-            <table style={{ textAlign: 'center' }}>
-                <thead>
-                    <tr style={{ height: '50px' }}>
-                        <th style={{ fontSize: '25px', width: '50px', borderBottom: '2px solid black' }}>완료</th>
-                        <th style={{ fontSize: '25px', width: '150px', borderBottom: '2px solid black' }}>카테고리</th>
-                        <th style={{ fontSize: '25px', width: '450px', borderBottom: '2px solid black' }}>할 일</th>
+            <table>
+                <tr align='center' height='35px'>
+                    <th width='80px'>완료</th>
+                    <th width='150px'>카테고리</th>
+                    <th width='200px'>할 일</th>
+                </tr>
+                {todoData.map((todo) => (
+                    <tr key={todo.id} align='center' height='30px'>
+                        <td>
+                            <input
+                                type="checkbox"
+                                checked={todo.checked || false}
+                                onChange={() => CheckboxChange(todo.id)}
+                            />
+                        </td>
+                        <td style={{textDecoration:todo.checked ? 'line-through red' :'none'}}>{todo.category}</td>
+                        <td style={{textDecoration:todo.checked ? 'line-through red' :'none'}}>{todo.text}
+                        </td> 
                     </tr>
-                </thead>
-                <tbody>
-                    {todoData.map((todo) => (
-                        <tr key={todo.id} style={{ height: '40px' }}>
-                            <td style={{ fontSize: '20px' }}>
-                                <input
-                                    type="checkbox"
-                                    checked={todo.checked || false}
-                                    onChange={() => CheckboxChange(todo.id)}
-                                />
-                            </td>
-                            <td style={{ fontSize: '20px' }}>{todo.category}</td>
-                            <td style={{ 
-                                fontSize: '20px',
-                                color: 'black',
-                                textDecoration: todo.checked ? 'line-through red' : 'none'}}
-                            >{todo.text}
-                            </td> 
-                        </tr>
-                    ))}
-                </tbody>
+                ))}
             </table>
         </div>
     );
 };
 
-const TodoInsert = ({setPage,todoData,setTodoData}) => {     //할 일 추가 페이지
+const TodoInsert = ({setPage,todoData,setTodoData}) => {
     const [checkTodos,setCheckTodos]=useState([]);
     const [title,setTitle]=useState('');
     const [cate,setCate]=useState('');
@@ -352,7 +346,7 @@ const TodoInsert = ({setPage,todoData,setTodoData}) => {     //할 일 추가 �
             id: todoData.length + 1,
             text,
             category: cate,
-            checked: false, // 새로운 할 일에 기본적으로 체크되지 않은 상태를 설정
+            checked: false,
         };
         setTodoData([...todoData, newTodo]);
         setTitle('');
@@ -391,64 +385,61 @@ const TodoInsert = ({setPage,todoData,setTodoData}) => {     //할 일 추가 �
 
     return (
         <div>
-            <h1 style={{margin:'30 0 10 50'}}>할 일 추가
-                <button style={{fontSize:'20px',fontWeight:'600', marginLeft:'10px'}}
-                    onClick={()=>setPage('todoHome')}>이전</button>
-            </h1><hr style={{width:'720px',marginLeft:'0'}} />
+            <h1>할 일 추가 &nbsp;
+                <button onClick={()=>setPage('todoHome')}>이전</button>
+            </h1><hr width='750px' align='left' />
 
-            <div style={{fontSize:'20px',fontWeight:'600',height:'40px',alignContent:'center'}}>
-                <div style={{display:'inline-block', marginLeft:'10px'}}>
-                    <span style={{marginRight:'10px'}}>카테고리</span>
-                    <select 
-                        name='category'
-                        value={cate}
-                        onChange={(evt)=>setCate(evt.target.value)}
-                        style={{width:'65px',height:'25px',border:'2px solid black'}}>
-                        <option value="">선택</option>
-                        <option value='중요' style={{color:'red',fontWeight:'600'}}>중요</option>
-                        <option value='일상' style={{color:'skyblue',fontWeight:'600'}}>일상</option>
-                        <option value='공부' style={{color:'purple',fontWeight:'600'}}>공부</option>
-                    </select>
-                </div>
-                <div style={{display:'inline-block', marginLeft:'50px'}}>
-                    <span style={{margin:'0 10'}}>Task</span>
-                    <input 
-                        type='text'
-                        placeholder='할 일 입력'
-                        value={title}
-                        ref={textUi}
-                        style={{width:'200px',height:'25px',border:'2px solid black',}}
+            <table>
+                <tr>
+                    <th>카테고리</th>
+                    <td>
+                        <select name='category' value={cate} onChange={(evt)=>setCate(evt.target.value)}>
+                            <option value="">선택</option>
+                            <option value='중요'>중요</option>
+                            <option value='일상'>일상</option>
+                            <option value='공부'>공부</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Task</th>
+                    <td>
+                        <input type='text' placeholder='할 일 입력'
+                        value={title} ref={textUi}
                         onKeyDown={(evt)=>{
                             if (evt.key=='Enter'){
                                 addTodo(title);
                             }
                         }}
                         onChange={(evt)=>{setTitle(evt.target.value)}} />
-                    <button 
-                        style={{marginLeft:'5px',fontSize:'14px',height:'25px'}}
-                        onClick={()=>{addTodo(title)}}>입력</button>
-                </div>
-            </div><hr style={{width:'720px',marginLeft:'0'}} />
+                        &nbsp;
+                        <button onClick={()=>{addTodo(title)}}>입력</button>
+                    </td>
+                </tr>
+            </table><hr width='750px' align='left' />
 
-            <div>
-                {todoData.map((todo)=>(
-                    <label key={todo.id} style={{display:'block',fontSize:'22px',margin:'10px',width:'500px'}}>
-                        <input type='checkbox' onChange={()=>checkChange(todo.id)} />
-                        <div style={{display:'inline-block',fontWeight:'600'}}>
-                        {todo.category} - {todo.text}
-                        </div>
-                    </label>
+            <table>
+                {todoData.map((todo) => (
+                    <tr key={todo.id} height='28px'>
+                        <th>
+                            <label>
+                                <input type="checkbox" onChange={() => checkChange(todo.id)} />
+                                &nbsp;
+                                {todo.category} - {todo.text}
+                            </label>
+                        </th>
+                    </tr>
                 ))}
-            </div><hr style={{width:'720px',marginLeft:'0'}} />
+            </table> <hr width='750px' align='left' />
 
-            <button style={{marginLeft:'20px',fontSize:'20px',fontWeight:'600'}} onClick={deleteTodo}>삭제</button>
-            <button style={{marginLeft:'20px',fontSize:'20px',fontWeight:'600'}} onClick={saveTodo}>저장</button>
-            
+            <button onClick={deleteTodo}>삭제</button>
+            &nbsp;
+            <button onClick={saveTodo}>저장</button>
         </div>
     )
 };
 
-export default function Test() {
+export default function Final() {
     const [page, setPage] = useState('main');
     const [emoteData, setEmoteData] = useState([]);
     const [todoData,setTodoData] = useState([]);
