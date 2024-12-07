@@ -17,7 +17,7 @@ const Main = ({ setPage }) => {
                 </tr>
                 <tr align='center'>
                     <td colspan='2'>
-                        <img src='/icon/main.jpg' width='400px' />
+                        <img src='/icon/main.jpg' width='600px' />
                     </td>
                 </tr>
                 <tr align='center'>
@@ -316,8 +316,8 @@ const TodoHome = ({ setPage, todoData, setTodoData }) => {
                                 onChange={() => CheckboxChange(todo.id)}
                             />
                         </td>
-                        <td style={{textDecoration:todo.checked ? 'line-through red' :'none'}}>{todo.category}</td>
-                        <td style={{textDecoration:todo.checked ? 'line-through red' :'none'}}>{todo.text}
+                        <td style={{textDecoration:todo.checked ? 'line-through 2px red' :'none'}}>{todo.category}</td>
+                        <td style={{textDecoration:todo.checked ? 'line-through 2px red' :'none'}}>{todo.text}
                         </td> 
                     </tr>
                 ))}
@@ -421,13 +421,13 @@ const TodoInsert = ({setPage,todoData,setTodoData}) => {
             <table>
                 {todoData.map((todo) => (
                     <tr key={todo.id} height='28px'>
-                        <th>
+                        <td>
                             <label>
                                 <input type="checkbox" onChange={() => checkChange(todo.id)} />
                                 &nbsp;
                                 {todo.category} - {todo.text}
                             </label>
-                        </th>
+                        </td>
                     </tr>
                 ))}
             </table> <hr width='750px' align='left' />
